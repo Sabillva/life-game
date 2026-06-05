@@ -1,31 +1,42 @@
+import { useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Suspense } from 'react'
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { FOG, PALETTE } from '../constants/world'
+import { CAMERA } from '../constants/character'
 import Lighting from './Lighting'
+import CameraControls from './CameraControls'
 import { Ground, Sky, Particles } from './Environment'
 import { CharacterController } from './Character'
 
 /**
  * Scene
- * Root canvas.
+ * Owns the controlsRef and passes it downward.
  *
- * Camera is set to manual={true} so that useThirdPersonCamera
- * inside CharacterController has full control each frame without
- * R3F's default camera fighting it.
+ * Data flow:
+ *   controlsRef (Scene)
+ *     → CameraControls   (writes the OrbitControls instance into the ref)
+ *     → CharacterController → useOrbitTarget  (reads the ref to move the pivot)
  *
- * Composition order:
- *   Sky dome → Ground → Particles → Lights → Character (+ camera hook)
+ * This is the only place that knows both exist.
+ * CameraControls and CharacterController are fully decoupled from each other.
  */
 export default function Scene() {
+  const controlsRef = useRef<OrbitControlsImpl>(null)
+
   return (
     <Canvas
-      camera={{ position: [0, 8, 14], fov: 52, near: 0.1, far: 300 }}
+      camera={{
+        position: [0, CAMERA.targetBias + 6, CAMERA.initialDistance],
+        fov: 52,
+        near: 0.1,
+        far: 300,
+      }}
       dpr={[1, 2]}
       shadows
       gl={{ antialias: true, alpha: false }}
-      style={{ background: PALETTE.skyHorizon }}  /* pale silver-blue horizon */
+      style={{ background: PALETTE.skyHorizon }}
     >
-      {/* Atmospheric exponential fog */}
       <fogExp2 attach="fog" color={FOG.color} density={0.018} />
 
       <Suspense fallback={null}>
@@ -34,8 +45,12 @@ export default function Scene() {
         <Particles />
         <Lighting />
 
-        {/* Character owns WASD input + camera follow */}
-        <CharacterController />
+        {/*
+          CameraControls must render before CharacterController
+          so the ref is populated before useOrbitTarget's first useFrame.
+        */}
+        <CameraControls ref={controlsRef} />
+        <CharacterController controlsRef={controlsRef} />
       </Suspense>
     </Canvas>
   )

@@ -1,31 +1,40 @@
 /**
  * character.ts
  * All tunable values for the character and third-person camera.
- * Centralised here so nothing is buried in component logic.
  */
 
 export const CHARACTER = {
   // Capsule geometry
   radius:      0.38,
-  height:      1.1,   // cylinder segment between hemispheres
-  totalHeight: 1.86,  // radius*2 + height  (auto-derived for readability)
+  height:      1.1,
+  totalHeight: 1.86,
 
   // Movement
   moveSpeed:   6.0,   // units per second
-  turnSpeed:   12.0,  // radians per second (visual body rotation)
+  turnSpeed:   12.0,  // radians per second
 
   // Visual
-  bodyColor:   '#f0c8a0',   // warm peach skin tone
-  eyeColor:    '#3d2b1f',   // dark warm brown
-  cheekColor:  '#f0a0a0',   // soft blush
+  bodyColor:  '#f0c8a0',
+  eyeColor:   '#3d2b1f',
+  cheekColor: '#f0a0a0',
 } as const
 
 export const CAMERA = {
-  // Offset from character in character-local space (before yaw)
-  distance:   9.0,    // how far behind
-  height:     4.5,    // how high above character origin
-  lookAtBias: 1.2,    // look slightly above origin (character mid-torso)
+  /**
+   * Vertical bias added to the OrbitControls target so the camera
+   * looks at the character's torso, not their feet.
+   */
+  targetBias: 1.0,
 
-  // Smoothing
-  lerpFactor: 0.08,   // lower = slower / dreamier follow
+  /**
+   * How quickly the orbit target lerps to the character position.
+   * 0.08 = smooth cinematic lag. Raise toward 1.0 for tighter follow.
+   * Movement direction does NOT affect this — the user orbits freely.
+   */
+  followLerp: 0.08,
+
+  // Starting orbit state (applied once on mount via OrbitControls props)
+  initialDistance: 10,
+  minDistance:      4,
+  maxDistance:     40,
 } as const

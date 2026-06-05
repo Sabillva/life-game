@@ -37,7 +37,8 @@ export default function Ground() {
           dist = clamp(dist, 0.0, 1.0);
           // Smooth quintic ease
           float t = dist * dist * dist * (dist * (dist * 6.0 - 15.0) + 10.0);
-          vec3 color = mix(uColorCenter, uColorEdge, t);
+          t = pow(t, 1.4);
+vec3 color = mix(uColorCenter, uColorEdge, t);
           gl_FragColor = vec4(color, 1.0);
         }
       `,

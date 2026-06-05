@@ -6,30 +6,27 @@
  */
 
 export const PALETTE = {
-  // Sky gradient — clear midday sky, no green tint, proper atmospheric scattering
-  skyTop:     '#4a8fc2',   // deep cerulean overhead
-  skyMid:     '#87bfdf',   // mid-blue, slightly desaturated
-  skyHorizon: '#c9dfe8',   // pale silver-blue haze at horizon
+  // Sky
+  skyTop: '#5fa8d3',
+  skyMid: '#8fc7e8',
+  skyHorizon: '#d9eef7',
 
-  // Ground — real lawn: slightly yellow-green, not saturated
-  grassBase:  '#7a9e5f',   // natural mid-tone lawn grass
-  grassDark:  '#5c7a44',   // slightly darker at distance / shadows
+  // Grass
+  grassBase: '#6faa46',
+  grassDark: '#4f7d32',
 
-  // Lighting — high-noon sun is nearly white, very slight warmth
-  sunColor:   '#fff8f0',   // near-white with barely perceptible warmth
-  fillColor:  '#d6e8f5',   // cool sky-bounce from above
-  rimColor:   '#e8f0d8',   // very subtle warm-neutral fill, not orange
+  // Lighting
+  sunColor: '#ffffff',
+  fillColor: '#bcd7ea',
 
-  // Particles — nearly invisible dust motes, not glowing spores
-  particleColor: '#d4cfc8',
+  particleColor: '#d8d2c7',
 } as const
 
 export const FOG = {
-  // True atmospheric haze: blueish-grey, not green
-  color:   '#b8cedc',
-  near:    18,
-  far:     80,
-} as const
+  color: '#d7e8f2',
+  near: 40,
+  far: 140,
+}
 
 export const WORLD = {
   groundSize:     120,

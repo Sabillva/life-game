@@ -23,7 +23,7 @@ export default function Lighting() {
         args={[
           PALETTE.skyMid,    // sky colour — cool blue-white
           PALETTE.grassBase, // ground bounce — desaturated green
-          1.1,               // intensity
+          0.55,               // intensity
         ]}
       />
 
@@ -34,7 +34,7 @@ export default function Lighting() {
       */}
       <directionalLight
         position={[8, 18, 6]}
-        intensity={2.8}
+        intensity={1.6}
         color={PALETTE.sunColor}
         castShadow
         shadow-mapSize={[2048, 2048]}
@@ -55,7 +55,7 @@ export default function Lighting() {
       */}
       <directionalLight
         position={[-6, 8, -8]}
-        intensity={0.38}
+        intensity={0.15}
         color={PALETTE.fillColor}
       />
     </>
